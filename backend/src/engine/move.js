@@ -1,3 +1,5 @@
+// import { BLACK, WHITE } from "../config.js";
+// import { countCheckers } from "./board";
 import { fail } from "../utils/helper.js";
 import {
   allCheckersHome,
@@ -7,6 +9,8 @@ import {
   hasFartherChecker,
   isValidPoint,
   isValidStep,
+  placeChecker,
+  removeChecker,
 } from "../utils/move.js";
 
 function validateBar(game, to, die, player) {
@@ -92,4 +96,28 @@ export function getLegalMoves(game) {
     }
   }
   return moves;
+}
+
+export function gameMove(game, move) {
+  const error = validateMove(game, move);
+  if (error) return error;
+
+  const next = structuredClone(game);
+  const player = next.currentPlayer;
+  const { from, to, die } = move;
+
+  if (from === "bar") next.bar[player] -= 1;
+  else removeChecker(next.board[from]);
+
+  if (to === "off") next.borneOff[player] += 1;
+  else placeChecker(next, to, player);
+
+  next.remainingDice.splice(next.remainingDice.indexOf(die), 1);
+
+  // for (const player of [WHITE, BLACK]) {
+  //   if (countCheckers(next, player) !== 15)
+  //     throw new Error(`Checker count broken for ${player}`);
+  // }
+
+  return { ok: true, game: next };
 }
