@@ -19,3 +19,7 @@ export function isHome(index, player) {
 export function isValidPoint(point) {
   return Number.isInteger(point) && point >= 0 && point <= 23;
 }
+
+export function isValidStep(point, player) {
+  return point.owner === null || point.owner === player || point.checkers === 1;
+}
