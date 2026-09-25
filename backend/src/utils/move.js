@@ -27,3 +27,9 @@ export function isValidStep(point, player) {
 export function allCheckersHome(game, player) {
   return game.board.every((p, i) => p.owner !== player || isHome(i, player));
 }
+
+export function hasFartherChecker(board, player, distance) {
+  return board.some(
+    (p, i) => p.owner === player && distanceToExit(i, player) > distance,
+  );
+}
