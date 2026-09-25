@@ -31,7 +31,7 @@ export function createInitialBoard() {
 export function countCheckers(state, player) {
   const onBoard = state.board
     .filter((point) => point.owner === player)
-    .reduce((sum, point) => sum + point, 0);
+    .reduce((sum, point) => sum + point.checkers, 0);
 
-  return onBoard + state.boardOff[player] + state.bar[player];
+  return onBoard + state.borneOff[player] + state.bar[player];
 }
