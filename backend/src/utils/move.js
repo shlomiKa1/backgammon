@@ -15,3 +15,7 @@ export function distanceToExit(index, player) {
 export function isHome(index, player) {
   return player === WHITE ? index >= 0 && index < 6 : index > 17 && index < 24;
 }
+
+export function isValidPoint(point) {
+  return Number.isInteger(point) && point >= 0 && point <= 23;
+}
