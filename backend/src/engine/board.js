@@ -27,3 +27,11 @@ export function createInitialBoard() {
     winner: null,
   };
 }
+
+export function countCheckers(state, player) {
+  const onBoard = state.board
+    .filter((point) => point.owner === player)
+    .reduce((sum, point) => sum + point, 0);
+
+  return onBoard + state.boardOff[player] + state.bar[player];
+}
