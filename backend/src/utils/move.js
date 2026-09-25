@@ -33,3 +33,8 @@ export function hasFartherChecker(board, player, distance) {
     (p, i) => p.owner === player && distanceToExit(i, player) > distance,
   );
 }
+
+export function removeChecker(point) {
+  point.checkers--;
+  if (point.checkers === 0) point.owner = null;
+}
