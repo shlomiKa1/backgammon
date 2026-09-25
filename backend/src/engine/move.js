@@ -1,9 +1,11 @@
 import { fail } from "../utils/helper.js";
 import {
   allCheckersHome,
+  calculateDestination,
   distanceToExit,
   getBarDestination,
   hasFartherChecker,
+  isValidPoint,
   isValidStep,
 } from "../utils/move.js";
 
@@ -29,5 +31,18 @@ function validateOff(game, from, die, player) {
     return fail("cannot_bear_off", "A farther checker must move first");
   }
 
+  return null;
+}
+
+function validateRegularMove(game, from, to, die, player) {
+  if (to === "off") return validateOff(game, from, die, player);
+
+  if (!isValidPoint(to))
+    return fail("invalid_destination", "Invalid destination");
+
+  if (to !== calculateDestination(from, die, player))
+    return fail("invalid_dest", "");
+
+  if (!isValidStep(game.board[to], player)) return fail("blocked_point", "");
   return null;
 }
