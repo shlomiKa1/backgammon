@@ -38,3 +38,15 @@ export function removeChecker(point) {
   point.checkers--;
   if (point.checkers === 0) point.owner = null;
 }
+
+export function placeChecker(game, to, player) {
+  const target = game.board[to];
+
+  if (target.owner !== null && target.owner !== player) {
+    game.bar[target.owner]++;
+    target.checkers = 0;
+  }
+
+  target.owner = player;
+  target.checkers++;
+}
