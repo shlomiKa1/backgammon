@@ -46,3 +46,27 @@ function validateRegularMove(game, from, to, die, player) {
   if (!isValidStep(game.board[to], player)) return fail("blocked_point", "");
   return null;
 }
+
+export function validateMove(game, { from, to, die }) {
+  const player = game.currentPlayer;
+
+  if (game.status !== STATUS.move)
+    return fail("invalid_state", "Status not in move");
+
+  if (!Number.isInteger(die) || !game.remainingDice.includes(die)) {
+    return fail("invalid_die", "Die is not available");
+  }
+
+  if (from === "bar") return validateBar(game, to, die, player);
+
+  if (game.bar[player] > 0)
+    return fail("bar_contain", "There is contain a bar");
+
+  if (!isValidPoint(from))
+    return fail("invalid_source", "Invalid source of point");
+  if (game.board[from].owner !== player) {
+    return fail("not_your_checker", "Not your checker");
+  }
+
+  return validateRegularMove(game, from, to, die, player);
+}
