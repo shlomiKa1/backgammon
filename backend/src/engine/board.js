@@ -1,7 +1,7 @@
 import { BLACK, OPENING_LAYOUT, WHITE } from "../config.js";
 import { pointToIndex } from "../utils/helper.js";
 
-function createEmptyBoard() {
+export function createEmptyBoard() {
   return Array(24)
     .fill(null)
     .map(() => ({ owner: null, checkers: 0 }));
