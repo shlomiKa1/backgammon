@@ -11,3 +11,7 @@ export function getBarDestination(die, player) {
 export function distanceToExit(index, player) {
   return player === WHITE ? index + 1 : 24 - index;
 }
+
+export function isHome(index, player) {
+  return player === WHITE ? index >= 0 && index < 6 : index > 17 && index < 24;
+}
