@@ -23,3 +23,7 @@ export function isValidPoint(point) {
 export function isValidStep(point, player) {
   return point.owner === null || point.owner === player || point.checkers === 1;
 }
+
+export function allCheckersHome(game, player) {
+  return game.board.every((p, i) => p.owner !== player || isHome(i, player));
+}
