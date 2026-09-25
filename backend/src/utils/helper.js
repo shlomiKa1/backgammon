@@ -7,3 +7,7 @@ export function pointToIndex(point, player) {
 export function fail(code, message) {
   return { ok: false, error: { code, message } };
 }
+
+export function rollingDie() {
+  return Math.floor(Math.random() * 6) + 1;
+}
