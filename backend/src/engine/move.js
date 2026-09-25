@@ -1,5 +1,6 @@
 // import { BLACK, WHITE } from "../config.js";
 // import { countCheckers } from "./board";
+import { STATUS } from "../config.js";
 import { fail } from "../utils/helper.js";
 import {
   allCheckersHome,
