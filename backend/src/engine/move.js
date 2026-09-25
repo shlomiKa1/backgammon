@@ -64,9 +64,32 @@ export function validateMove(game, { from, to, die }) {
 
   if (!isValidPoint(from))
     return fail("invalid_source", "Invalid source of point");
+
   if (game.board[from].owner !== player) {
     return fail("not_your_checker", "Not your checker");
   }
 
   return validateRegularMove(game, from, to, die, player);
+}
+
+export function getLegalMoves(game) {
+  const player = game.currentPlayer;
+  const moves = [];
+
+  for (const die of new Set(game.remainingDice)) {
+    const candidates = [
+      { from: "bar", to: getBarDestination(die, player), die },
+    ];
+
+    game.board.forEach((point, from) => {
+      if (point.owner !== player) return;
+      const to = calculateDestination(from, die, player);
+      candidates.push({ from, to: isValidPoint(to) ? to : "off", die });
+    });
+
+    for (const move of candidates) {
+      if (validateMove(game, move) === null) moves.push(move);
+    }
+  }
+  return moves;
 }
