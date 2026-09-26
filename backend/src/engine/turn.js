@@ -24,6 +24,25 @@ export function startGame(roll = rollingDie) {
   return { ok: true, game: resolveTurn(next) };
 }
 
+import { fail, rollingDie } from "../utils/helper.js";
+
+export function rollDice(game, roll = rollingDie) {
+  if (game.status !== STATUS.rool)
+    return fail("invalid_state", "Not waiting for a roll");
+
+  const die1 = roll();
+  const die2 = roll();
+
+  const next = {
+    ...game,
+    dice: [die1, die2],
+    remainingDice: die1 === die2 ? [die1, die1, die1, die1] : [die1, die2],
+    status: STATUS.move,
+  };
+
+  return { ok: true, game: resolveTurn(next) };
+}
+
 const opponent = (player) => (player === WHITE ? BLACK : WHITE);
 
 function resolveTurn(game) {
