@@ -4,8 +4,11 @@ import {
   clearStore,
   deleteRoom,
   getRoom,
+  getRoomCodeBySocket,
   hasRoom,
+  removeSocket,
   saveRoom,
+  SetSocketToRoom,
 } from "../../rooms/room.store.js";
 
 describe("roomStore", () => {
@@ -28,5 +31,13 @@ describe("roomStore", () => {
     deleteRoom("ABC123");
 
     assert.equal(hasRoom("ABC123"), false);
+  });
+
+  it("maps a socket to its room", () => {
+    SetSocketToRoom("socket1", "ABCD123");
+    assert.equal(getRoomCodeBySocket("socket1"), "ABCD123");
+
+    removeSocket("socket1");
+    assert.equal(getRoomCodeBySocket("socket1"), undefined);
   });
 });
