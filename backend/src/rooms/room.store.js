@@ -6,7 +6,7 @@ export const getRoom = (roomCode) => rooms.get(roomCode);
 export const hasRoom = (roomCode) => rooms.has(roomCode);
 export const deleteRoom = (roomCode) => rooms.delete(roomCode);
 
-export const SetSocketRoRoom = (socketId, roomCode) =>
+export const SetSocketToRoom = (socketId, roomCode) =>
   socketToRoom.set(socketId, roomCode);
 
 export const getRoomCodeBySocket = (socketId) => socketToRoom.get(socketId);
