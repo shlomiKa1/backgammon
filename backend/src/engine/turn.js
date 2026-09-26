@@ -27,7 +27,7 @@ export function startGame(roll = rollingDie) {
 import { fail, rollingDie } from "../utils/helper.js";
 
 export function rollDice(game, roll = rollingDie) {
-  if (game.status !== STATUS.rool)
+  if (game.status !== STATUS.roll)
     return fail("invalid_state", "Not waiting for a roll");
 
   const die1 = roll();
