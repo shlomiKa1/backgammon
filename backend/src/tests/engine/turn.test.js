@@ -37,3 +37,24 @@ describe("rolling", () => {
     assert.deepEqual(game.remainingDice, [4, 4, 4, 4]);
   });
 });
+
+describe("blocked roll", () => {
+  it("passes the turn when every point is blocked", () => {
+    const blocked = [18, 19, 20, 21, 22, 23].map((index) => [
+      index,
+      BLACK,
+      2,
+    ]);
+
+    const state = stateWith(blocked, {
+      status: STATUS.roll,
+      bar: { white: 1, black: 0 },
+    });
+    const { game } = rollDice(state, fixedRolls(3, 5));
+
+    assert.equal(game.currentPlayer, BLACK);
+    assert.equal(game.status, STATUS.roll);
+    assert.deepEqual(game.dice, [])
+    assert.deepEqual(game.remainingDice, [])
+  });
+});
