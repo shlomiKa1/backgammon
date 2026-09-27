@@ -1,6 +1,4 @@
-// import { BLACK, WHITE } from "../config.js";
-// import { countCheckers } from "./board";
-import { STATUS } from "../config.js";
+import { BLACK, WHITE, STATUS } from "../config.js";
 import { fail } from "../utils/helper.js";
 import {
   allCheckersHome,
@@ -115,10 +113,34 @@ export function gameMove(game, move) {
 
   next.remainingDice.splice(next.remainingDice.indexOf(die), 1);
 
-  // for (const player of [WHITE, BLACK]) {
-  //   if (countCheckers(next, player) !== 15)
-  //     throw new Error(`Checker count broken for ${player}`);
-  // }
+  return { ok: true, game: resolveTurn(next) };
+}
 
-  return { ok: true, game: next };
+const opponent = (player) => (player === WHITE ? BLACK : WHITE);
+
+export function resolveTurn(game) {
+  const player = game.currentPlayer;
+
+  if (game.borneOff[player] === 15) {
+    return {
+      ...game,
+      dice: [],
+      remainingDice: [],
+      winner: player,
+      status: STATUS.finished,
+    };
+  }
+
+  const hasDice = game.remainingDice.length > 0;
+  if (hasDice && getLegalMoves(game).length > 0) {
+    return game;
+  }
+
+  return {
+    ...game,
+    currentPlayer: opponent(player),
+    dice: [],
+    remainingDice: [],
+    status: STATUS.roll,
+  };
 }
