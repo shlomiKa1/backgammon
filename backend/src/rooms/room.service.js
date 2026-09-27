@@ -1,4 +1,5 @@
 import {
+  BLACK,
   CODE_ALPHABET,
   CODE_LENGTH,
   MAX_NAME_LENGTH,
@@ -7,6 +8,7 @@ import {
 } from "../config.js";
 import { fail } from "../utils/helper.js";
 import {
+  getRoom,
   getRoomCodeBySocket,
   hasRoom,
   saveRoom,
@@ -57,3 +59,24 @@ export function createRoom(socketId, name, pickIndex = randomIndex) {
   return { ok: true, room, color: WHITE };
 }
 
+export function joinRoom(socketId, roomCode, name) {
+  if (getRoomCodeBySocket(socketId))
+    return fail("already_in_room", "Alraeady in a room");
+
+  const playerName = cleanName(name);
+  if (!playerName) return fail("invalid_name", "Name must be 1-20 characters");
+
+  if (typeof roomCode !== "string")
+    return fail("room_not_found", "Room not found");
+  const room = getRoom(roomCode.trim().toUpperCase());
+
+  if (!room) return fail("room_not_found", "Room not found");
+  if (room.status !== ROOM_STATUS.waiting)
+    return fail("room_not_available", "Game already stared");
+  if (room.players.length >= 2) return fail("room_full", "Room is full");
+
+  room.players.push({ socketId, name: playerName, color: BLACK });
+  SetSocketToRoom(socketId, room.id);
+
+  return { ok: true, room, color: BLACK };
+}
