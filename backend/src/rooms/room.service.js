@@ -8,9 +8,11 @@ import {
 } from "../config.js";
 import { fail } from "../utils/helper.js";
 import {
+  deleteRoom,
   getRoom,
   getRoomCodeBySocket,
   hasRoom,
+  removeSocket,
   saveRoom,
   SetSocketToRoom,
 } from "./room.store.js";
@@ -79,4 +81,21 @@ export function joinRoom(socketId, roomCode, name) {
   SetSocketToRoom(socketId, room.id);
 
   return { ok: true, room, color: BLACK };
+}
+
+export function leaveRoom(socketId) {
+  const roomCode = getRoomCodeBySocket(socketId);
+  if (!roomCode) return fail("not_in_room", "Not in room");
+
+  const room = getRoom(roomCode);
+  const allSocketIds = room ? room.players.map((p) => p.socketId) : [socketId];
+
+  for (const id of allSocketIds) {
+    removeSocket(id);
+  }
+
+  deleteRoom(roomCode);
+
+  const remainingSocketIds = allSocketIds.filter((id) => id !== socketId);
+  return { ok: true, roomCode, remainingSocketIds };
 }
