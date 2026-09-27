@@ -71,8 +71,7 @@ export function playMove(socketId, move) {
   if (!move || typeof move !== "object")
     return fail("invalid_move", "Invalid move");
 
-  const result = playTurnMove(room.game, move);
-  //   const result = gameMove(room.game, move);
+  const result = gameMove(room.game, move);
   if (!result.ok) return result;
 
   room.game = result.game;
