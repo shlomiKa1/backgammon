@@ -35,7 +35,7 @@ function cleanName(name) {
   return trimmed;
 }
 
-function createRoom(socketId, name, pickIndex = randomIndex) {
+export function createRoom(socketId, name, pickIndex = randomIndex) {
   if (getRoomCodeBySocket(socketId))
     return fail("already_in_room", "Already in a room");
 
