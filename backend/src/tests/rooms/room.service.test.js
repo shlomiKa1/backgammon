@@ -1,10 +1,16 @@
 import { test, describe, it, beforeEach } from "node:test";
 import assert from "assert/strict";
-import { clearStore, saveRoom } from "../../rooms/room.store.js";
+import {
+  clearStore,
+  getRoom,
+  getRoomCodeBySocket,
+  saveRoom,
+} from "../../rooms/room.store.js";
 import {
   createRoom,
   generateRoomCode,
   joinRoom,
+  leaveRoom,
 } from "../../rooms/room.service.js";
 import { fixedRolls } from "../helpers.js";
 import { BLACK, WHITE } from "../../config.js";
@@ -72,6 +78,20 @@ describe("room service", () => {
       const { room } = createRoom("s1", "Momo");
       joinRoom("s2", room.id, "Koko");
       assert.equal(joinRoom("s3", room.id, "Toto").error.code, "room_full");
+    });
+  });
+
+  describe("leave room", () => {
+    it("deletes the room and returns rhe other player", () => {
+      const { room } = createRoom("s1", "Momo");
+      joinRoom("s2", room.id, "Koko");
+
+      const result = leaveRoom("s1");
+
+      assert.deepEqual(result.remainingSocketIds, ["s2"]);
+      assert.equal(getRoom(room.id), undefined);
+      assert.equal(getRoomCodeBySocket("s2"), undefined);
+      assert.equal(createRoom("s2", "Koko").ok, true);
     });
   });
 });
