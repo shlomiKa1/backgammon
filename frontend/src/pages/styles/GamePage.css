@@ -1,0 +1,45 @@
+/* frontend/src/pages/GamePage.css */
+
+/* כל דף המשחק ממורכז, עם רוחב מקסימלי */
+.game-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+  text-align: center;
+  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+}
+
+.game-page p {
+  margin: 4px 0;
+}
+
+.game-page h1,
+.game-page h2 {
+  margin: 8px 0;
+}
+
+/* כפתורים כלליים בדף: הטלה, משחק חוזר, עזיבה */
+.game-page > section > button,
+.leave-button {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 6px;
+  background: #6b4526;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.game-page > section > button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.leave-button {
+  background: #8b1e1e;
+}

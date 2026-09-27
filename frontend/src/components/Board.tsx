@@ -3,6 +3,7 @@ import { useGameStore } from "../store/useGameStore";
 import { useAction } from "../hooks/useAction";
 import { moveChecker } from "../socket/actions";
 import BoardPoint from "./BoardPoint";
+import "./styles/Board.css"
 
 const WHITE_TOP = [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 const WHITE_BOTTOM = [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
@@ -61,7 +62,7 @@ const Board = () => {
   );
 
   return (
-    <section>
+    <section className="board">
       {renderRow(topRow, true)}
 
       <button

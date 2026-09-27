@@ -1,0 +1,121 @@
+/* frontend/src/components/Board.css */
+
+/* ===== הלוח ===== */
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* רווח בין שורה לבר ובין הבר לשורה */
+  width: 100%;
+  max-width: 760px;
+  margin: 8px auto;
+  padding: 14px;
+  box-sizing: border-box;
+  background: #d8c3a0;
+  border: 10px solid #6b4526;
+  border-radius: 8px;
+}
+
+/* ===== שורה של 12 נקודות ===== */
+.board-row {
+  display: grid;
+  /* 6 נקודות, רווח באמצע, ועוד 6 נקודות */
+  grid-template-columns: repeat(6, 1fr) 14px repeat(6, 1fr);
+  gap: 4px;
+}
+
+/* הנקודה השביעית מדלגת על עמודת הרווח */
+.board-row .point:nth-child(7) {
+  grid-column: 8;
+}
+
+/* ===== נקודה: מלבן שרואים תמיד, גם כשהוא ריק ===== */
+.point {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 150px;
+  padding: 6px 0;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* צבעים לסירוגין */
+.point-dark {
+  background: #a0522d;
+}
+.point-light {
+  background: #f1e3c6;
+}
+
+/* בשורה העליונה הכלי למעלה, בתחתונה למטה */
+.point-top {
+  justify-content: flex-start;
+}
+.point-bottom {
+  justify-content: flex-end;
+}
+
+/* ===== כלי ===== */
+.checker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 14px;
+}
+.checker-white {
+  background: #ffffff;
+  color: #222222;
+  border: 2px solid #555555;
+}
+.checker-black {
+  background: #222222;
+  color: #ffffff;
+  border: 2px solid #000000;
+}
+
+/* ===== מצבים ===== */
+
+/* אפשר לבחור את הכלי הזה */
+.point-source {
+  border-color: #2e7d32;
+}
+
+/* הכלי שבחרתי */
+.point-selected {
+  border-color: #1565c0;
+  background: #bbdefb;
+}
+
+/* אפשר להזיז לכאן */
+.point-destination {
+  border-color: #2e7d32;
+  background: #c8e6c9;
+}
+
+/* ===== הבר והמגש: על כל הרוחב, טקסט באמצע ===== */
+.board-bar,
+.board-off {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  background: #6b4526;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 15px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.board-bar.point-selected {
+  border-color: #1565c0;
+}
+.board-off.point-destination {
+  border-color: #2e7d32;
+  background: #2e7d32;
+}
