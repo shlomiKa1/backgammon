@@ -11,6 +11,7 @@ import {
   generateRoomCode,
   joinRoom,
   leaveRoom,
+  toPublicRoom,
 } from "../../rooms/room.service.js";
 import { fixedRolls } from "../helpers.js";
 import { BLACK, WHITE } from "../../config.js";
@@ -92,6 +93,18 @@ describe("room service", () => {
       assert.equal(getRoom(room.id), undefined);
       assert.equal(getRoomCodeBySocket("s2"), undefined);
       assert.equal(createRoom("s2", "Koko").ok, true);
+    });
+  });
+
+  describe("toPublicRoom", () => {
+    it("never exposes socket ids", () => {
+      const { room } = createRoom("s1", "Momo");
+      joinRoom("s2", room.id, "Koko");
+
+      const roomJson = JSON.stringify(toPublicRoom(room));
+
+      assert.equal(roomJson.includes("s1"), false);
+      assert.equal(roomJson.includes("socketId"), false);
     });
   });
 });
