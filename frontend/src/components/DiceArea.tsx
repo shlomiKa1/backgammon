@@ -1,41 +1,33 @@
-interface DiceAreaProps {
-  dice: number[];
-  remainingDice: number[];
-  canRoll: boolean;
-  disabled: boolean;
-  onRoll: () => void;
-}
+import { useGameStore } from "../store/useGameStore";
+import { useAction } from "../hooks/useAction";
+import { rollDice } from "../socket/actions";
 
-const DiceArea = ({
-  dice,
-  remainingDice,
-  canRoll,
-  disabled,
-  onRoll,
-}: DiceAreaProps) => {
+const DiceArea = () => {
+  const game = useGameStore((state) => state.game);
+  const yourColor = useGameStore((state) => state.yourColor);
+  const { run, loading, error } = useAction();
+
+  if (!game) return null;
+
+  const canRoll = game.currentPlayer === yourColor && game.status === "waiting-for-roll";
+
   return (
     <section>
       <h2>Dice</h2>
-      <p>
-        {dice.length === 0
-          ? "Not rolled yet"
-          : dice.map((die, i) => <span key={`${dice.length - i}`}>{die}</span>)}
-      </p>
 
-      {remainingDice.length > 0 && (
-        <p>
-          Remaining: {""}
-          {remainingDice.map((die, i) => (
-            <span key={i}>{die}</span>
-          ))}
-        </p>
+      <p>{game.dice.length === 0 ? "Not rolled yet" : game.dice.join(" - ")}</p>
+
+      {game.remainingDice.length > 0 && (
+        <p>Remaining: {game.remainingDice.join(", ")}</p>
       )}
 
       {canRoll && (
-        <button onClick={onRoll} disabled={disabled}>
+        <button onClick={() => run(rollDice)} disabled={loading}>
           Roll
         </button>
       )}
+
+      {error && <p>{error}</p>}
     </section>
   );
 };

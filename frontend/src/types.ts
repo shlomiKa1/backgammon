@@ -54,7 +54,7 @@ export type ActionResult =
 export type RoomResult =
   | {
       success: true;
-      room: PublicPlayer;
+      room: PublicRoom;
       yourColor: Color;
     }
   | { success: false; error: ApiError };

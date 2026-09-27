@@ -1,39 +1,36 @@
-import type { Color, GameFinishedEvent } from "../types";
+import { useGameStore } from "../store/useGameStore";
+import { useAction } from "../hooks/useAction";
+import { requestRematch } from "../socket/actions";
 
-interface FinishPanelProps {
-  winner: GameFinishedEvent;
-  yourColor: Color;
-  rematchColors: Color[];
-  disabled: boolean;
-  onRematch: () => void;
-}
+const FinishPanel = () => {
+  const winner = useGameStore((state) => state.winner);
+  const room = useGameStore((state) => state.room);
+  const yourColor = useGameStore((state) => state.yourColor);
+  const { run, loading, error } = useAction();
 
-const FinishPanel = ({
-  winner,
-  yourColor,
-  rematchColors,
-  disabled,
-  onRematch,
-}: FinishPanelProps) => {
+  if (!winner || !room || !yourColor) return null;
+
   const youWon = winner.winnerColor === yourColor;
-  const opponentColor: Color = yourColor === "white" ? "black" : "white";
-  const hasAccepted = rematchColors.includes(yourColor);
+  const opponentColor = yourColor === "white" ? "black" : "white";
 
-  const opponentAccepted = rematchColors.includes(opponentColor);
+  const iAccepted = room.rematchColors.includes(yourColor);
+  const opponentAccepted = room.rematchColors.includes(opponentColor);
 
   return (
     <section>
-      <h1>{youWon ? `You Won!` : `${winner.winnerName} won`}</h1>
+      <h1>{youWon ? "You won!" : `${winner.winnerName} won`}</h1>
 
-      {hasAccepted ? (
+      {iAccepted ? (
         <p>Waiting for your opponent...</p>
       ) : (
-        <button onClick={onRematch} disabled={disabled}>
+        <button onClick={() => run(requestRematch)} disabled={loading}>
           Rematch
         </button>
       )}
 
-      {opponentAccepted && hasAccepted && <p>Your opponent wants a rematch</p>}
+      {opponentAccepted && !iAccepted && <p>Your opponent wants a rematch</p>}
+
+      {error && <p>{error}</p>}
     </section>
   );
 };

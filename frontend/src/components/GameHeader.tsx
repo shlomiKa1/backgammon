@@ -1,18 +1,20 @@
-import type { Color, PublicPlayer } from "../types";
+import { useGameStore } from "../store/useGameStore";
 
-interface GameHeaderProps {
-  players: PublicPlayer[];
-  currentPlayer: Color;
-  yourColor: Color;
-}
+const GameHeader = () => {
+  const room = useGameStore((state) => state.room);
+  const game = useGameStore((state) => state.game);
+  const yourColor = useGameStore((state) => state.yourColor);
 
-const GameHeader = ({ players, currentPlayer, yourColor }: GameHeaderProps) => {
-  const isMyTurn = currentPlayer === yourColor;
+  if (!room || !game) return null;
+
+  const isMyTurn = game.currentPlayer === yourColor;
+
   return (
     <header>
-      {players.map((player) => (
+      {room.players.map((player) => (
         <p key={player.color}>
-          {player.name} ({player.color}){player.color === yourColor && " (you)"}
+          {player.name} {player.color}
+          {player.color === yourColor && " (you)"}
         </p>
       ))}
 
