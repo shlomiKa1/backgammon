@@ -99,3 +99,16 @@ export function leaveRoom(socketId) {
   const remainingSocketIds = allSocketIds.filter((id) => id !== socketId);
   return { ok: true, roomCode, remainingSocketIds };
 }
+
+export function toPublicRoom(room) {
+  const colorOf = (socketId) =>
+    room.players.find((p) => p.socketId === socketId)?.color;
+
+  return {
+    id: room.id,
+    status: room.status,
+    players: room.players.map(({ name, color }) => ({ name, color })),
+    game: room.game,
+    rematchColors: room.rematchAcceptedBy.map(colorOf),
+  };
+}
